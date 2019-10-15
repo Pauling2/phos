@@ -11,5 +11,5 @@ with open(r'E:\python_project\original_data\RegPhos.fasta')as f:
             # print i.split('\t')[4]
             if i.split('\t')[1] not in sub:
                 sub.append(i.split('\t')[1])
-    print x;print len(sub)
+    print 'the number of phosphosites:%d' % x;print 'the number of protein substrate:',len(sub)
 f.close()
