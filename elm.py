@@ -50,16 +50,27 @@ def extract_specific_site(*kw):
         f2.close()
     f.close()
     print len(term),len(substrate)
-    
-    kinases = [];sub = []
+
+##输出激酶的个数和底物的个数
+    kinases = [];sub = [];positive_data=[];negative_data=[]
     for i in term:
         if i.split('\t')[5] not in kinases:
             kinases.append(i.split('\t')[5])
         if re.findall(kw[2],i.split('\t')[5]):
             sub.append(i)
     print len(kinases);print kinases;print len(sub)
+
+##将底物peptide提取出来
+    for i in sub:
+        if int(i.split('\t')[2]) > 6 and int(i.split('\t')[2]) < len(i.split('\t')[1])-7:   ##文件中的位点是蛋白质上的位点，因此在导入python中处理时，需要注意-1
+            if int(i.split('\t')[2]) == len(i.split('\t')[1])-6:
+                positive_data.append(i.split('\t')[1][-13:])
+            else:
+                positive_data.append(i.split('\t')[1][int(i.split('\t')[2])-7:int(i.split('\t')[2])+6])
+    print positive_data
     
+        
     
 
 if __name__=='__main__':
-    extract_specific_site(r'E:\python_project\original_data\human_elm_cd2.fasta',r'E:\python_project\original_data\human_elm.fasta','^PKC')
+    extract_specific_site(r'E:\python_project\original_data\human_elm_cd2.fasta',r'E:\python_project\original_data\human_elm.fasta','^CDK')
