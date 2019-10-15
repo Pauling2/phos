@@ -49,7 +49,7 @@ def extract_specific_site(*kw):
                                 
         f2.close()
     f.close()
-    print len(term),len(substrate)
+    print 'the number of phosphosites: %d' % len(term);print 'the number of protein substrate:',len(substrate)
 
 ##输出激酶的个数和底物的个数
     kinases = [];sub = [];positive_data=[];negative_data=[]
