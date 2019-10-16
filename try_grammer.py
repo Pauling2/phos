@@ -294,7 +294,10 @@ with open(r'C:\Users\xzw\Desktop\CDK_merge.fasta') as in_f:
 in_f.close()
 
 mod = gm.Doc2Vec.load(r'E:\python_project\model\doc2vector.bin')
+##使用模型输出词向量
+print mod['ASA']
 
+##使用模型处理激酶底物peptide数据
 docs=[]
 for i in T_positive2:
     doc=[]
