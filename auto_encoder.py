@@ -1,24 +1,26 @@
 #coding=utf8
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 
 # 导入MNIST数据
-# from tensorflow.examples.tutorials.mnist import input_data
-# mnist = input_data.read_data_sets("MNIST_data/", one_hot=False)
-fashion_mnist = keras.datasets.fashion_mnist
-(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+import input_data
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=False)
+# fashion_mnist = keras.datasets.fashion_mnist
+# (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
 learning_rate = 0.01
-training_epochs = 10
+training_epochs = 5
 batch_size = 256
 display_step = 1
 examples_to_show = 10
 n_input = 784
-
+print(tf.version)
 print(tf.__path__)
+
 # tf Graph input (only pictures)
 X = tf.placeholder("float", [None, n_input])
 
@@ -80,6 +82,8 @@ with tf.Session() as sess:
     else:
         init = tf.global_variables_initializer()
     sess.run(init)
+    
+    
     # 首先计算总批数，保证每次循环训练集中的每个样本都参与训练，不同于批量训练
     total_batch = int(mnist.train.num_examples / batch_size)  # 总批数
     for epoch in range(training_epochs):
@@ -94,7 +98,14 @@ with tf.Session() as sess:
     encode_decode = sess.run(
         y_pred, feed_dict={X: mnist.test.images[:examples_to_show]})
     f, a = plt.subplots(2, 10, figsize=(10, 2))
+    
+    ##查看编码后的结果
+    encoder_result = sess.run(encoder_op, feed_dict={X: mnist.train.images})
+    print(encoder_result.shape[0],encoder_result.shape)
+    print(encoder_result[:5,:])
+    
     for i in range(examples_to_show):
         a[0][i].imshow(np.reshape(mnist.test.images[i], (28, 28)))
         a[1][i].imshow(np.reshape(encode_decode[i], (28, 28)))
     plt.show()
+    
